@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ModalWindow from './lib/ModalWindow/ModalWindow';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const App = () => {
+  // Modal window state and handlers
+  const [showModal, setShowModal] = useState(false);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  // Add modal-open class to body when modal is open to prevent scrolling
+  useEffect(() => {
+    if (showModal) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [showModal]);
+
+  // Modal window handlers
+  function handleCloseModal() {
+    console.log('Clicked close modal button');
+    setShowModal(false);
+  }
+
+  function handleShowModal() {
+    setShowModal(true);
+  }
+
+  // The message to display in the modal window
+  const message = 'Display your message here!';
+  // Add a message with lorem ipsum text containing 20 words
+  // const message =
+  ('Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias molestiae perspiciatis omnis reprehenderit quo, in impedit rerum animi natus inventore.');
+
+  return (
+    <>
+      <div>React Modal Component</div>
+      <button onClick={handleShowModal}>Open modal window</button>
+      {showModal && (
+        <ModalWindow handleCloseModal={handleCloseModal} message={message} />
+      )}
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.querySelector('#root')).render(<App />);
